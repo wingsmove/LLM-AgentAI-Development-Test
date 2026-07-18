@@ -14,5 +14,5 @@ def read_pdf_text(pdf_path: str) -> str:
 
 
 if __name__ == "__main__":
-    pdf_text = read_pdf_text("sample.pdf")
+    pdf_text = read_pdf_text("report.pdf")
     print(pdf_text[:3000])  # 先只打印前 3000 个字符，避免刷屏
