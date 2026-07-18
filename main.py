@@ -13,7 +13,7 @@ def read_txt_file(txt_path: str) -> str:
         return f.read()
 
 
-# 向用户询问使用 txt 还是 pdf 导入
+# 询问使用 txt 还是 pdf 导入
 file_type = input("请选择导入的文件类型（1: txt，2: pdf，默认 1）：").strip()
 
 if file_type == "2":
@@ -49,7 +49,7 @@ response = client.responses.create(
 
 output_text = response.output_text
 
-# 让用户选择输出方式：打印、保存为 txt，或两者都要
+# 选择输出方式：Print，保存为 txt，或都要
 output_type = input(
     "请选择输出方式（1: 打印到屏幕，2: 保存为 txt，3: 同时打印+保存，默认 1）："
 ).strip()
