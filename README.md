@@ -4,7 +4,7 @@
 
 ## 功能简介
 
-- **爬虫（`scraper.py`）**：读取 `clubs.json` 中的俱乐部列表，抓取每个俱乐部页面的 *Upcoming Matches*，解析出比赛名称、日期、项目/级别、报名状态与链接。目标站点使用 Cloudflare 防护，因此使用 `cloudscraper`爬取，再用 `BeautifulSoup` 解析。
+- **爬虫（`scraper.py`）**：读取 `clubs.json` 中的俱乐部列表，抓取每个俱乐部页面的 *Upcoming Matches*，解析出比赛名称、日期、项目/级别、报名状态与链接。使用 `cloudscraper`爬取，再用 `BeautifulSoup` 解析。
 - **规划助手（`main.py`）**：把抓取到的比赛信息组织成提示词，调用 OpenAI 模型，以射击教练的视角生成参赛建议、阶段性训练计划、备赛重点、报名提醒等，并以 Markdown 输出。
 - **两种运行模式**：启动时可选择「使用 LLM 生成比赛规划」或「仅输出爬取的比赛」（不调用 LLM，也就无需 API Key）。
 - **归档输出**：所有保存的输出都写入 `Matches/` 文件夹，文件名自动带时间戳，避免覆盖历史结果。
