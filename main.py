@@ -9,15 +9,16 @@ from scraper import format_matches_text, get_upcoming_matches_text, scrape_all
 
 load_dotenv()
 
-OUTPUT_DIR = "Matches"
+MATCHES_DIR = "Matches"          # 爬取的比赛数据
+PAST_REPORTS_DIR = "Past_Reports"  # LLM 生成的历史报告，供后续 AgentAI 调用
 
 
-def save_output(content: str, base_name: str, ext: str) -> str:
-    """把内容保存到 Matches 文件夹，文件名加上时间戳。"""
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
+def save_output(content: str, base_name: str, ext: str, out_dir: str = MATCHES_DIR) -> str:
+    """把内容保存到指定文件夹，文件名加上时间戳。"""
+    os.makedirs(out_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"{base_name}_{timestamp}.{ext}"
-    save_path = os.path.join(OUTPUT_DIR, filename)
+    save_path = os.path.join(out_dir, filename)
     with open(save_path, "w", encoding="utf-8") as f:
         f.write(content)
     return save_path
@@ -28,7 +29,7 @@ mode = input(
     "请选择运行模式（1: 使用 LLM 生成比赛规划，2: 仅输出爬取的比赛，默认 1）："
 ).strip()
 
-clubs_path = "clubs.json"
+clubs_path = "Informations/clubs.json"
 
 # 模式 2：不使用 LLM，直接输出爬取的比赛
 if mode == "2":
@@ -96,7 +97,7 @@ output_type = input(
 ).strip()
 
 if output_type in ("2", "3"):
-    save_path = save_output(output_text, "report_output", "md")
+    save_path = save_output(output_text, "report", "md", out_dir=PAST_REPORTS_DIR)
     print(f"已保存到：{save_path}")
 
 if output_type != "2":

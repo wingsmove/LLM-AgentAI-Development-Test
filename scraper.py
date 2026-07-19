@@ -11,7 +11,7 @@ import cloudscraper
 from bs4 import BeautifulSoup
 
 
-def load_clubs(path: str = "clubs.json") -> list[dict]:
+def load_clubs(path: str = "Informations/clubs.json") -> list[dict]:
     """读取俱乐部列表。"""
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -90,7 +90,7 @@ def scrape_club(club: dict) -> dict:
     return {"name": club.get("name", ""), "url": club["url"], "matches": matches}
 
 
-def scrape_all(path: str = "clubs.json") -> list[dict]:
+def scrape_all(path: str = "Informations/clubs.json") -> list[dict]:
     """抓取 clubs.json 中所有俱乐部。"""
     results = []
     for club in load_clubs(path):
@@ -124,7 +124,7 @@ def format_matches_text(results: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def get_upcoming_matches_text(path: str = "clubs.json") -> str:
+def get_upcoming_matches_text(path: str = "Informations/clubs.json") -> str:
     """对外主入口：抓取并返回格式化后的比赛文本。"""
     return format_matches_text(scrape_all(path))
 
