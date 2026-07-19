@@ -45,13 +45,13 @@ output_text = response.output_text
 
 # 选择输出方式：Print，保存为 txt，或都要
 output_type = input(
-    "请选择输出方式（1: 打印到屏幕，2: 保存为 txt，3: 同时打印+保存，默认 1）："
+    "请选择输出方式（1: 打印到屏幕，2: 保存为 Markdown，3: 同时打印+保存，默认 1）："
 ).strip()
 
 if output_type in ("2", "3"):
-    save_path = input("请输入保存的 txt 文件路径（默认 report_output.txt）：").strip()
+    save_path = input("请输入保存的 txt 文件路径（默认 report_output.md）：").strip()
     if not save_path:
-        save_path = "report_output.txt"
+        save_path = "report_output.md"
     with open(save_path, "w", encoding="utf-8") as f:
         f.write(output_text)
     print(f"已保存到：{save_path}")
