@@ -1,6 +1,7 @@
 # USPSA-Match-Planner-with-LLM
 
-一个基于 **OpenAI Agents SDK** 的实践项目：自动爬取 [PractiScore](https://practiscore.com) 俱乐部页面的「即将进行的比赛」信息，并用不同的 AI Agent 为射手生成**比赛规划**与**成绩分析**。
+一个基于 **OpenAI Agents SDK** 的实践项目：自动爬取 [PractiScore](https://practiscore.com) 俱乐部页面的「即将进行的比赛」信息，接受用户自行输入的成绩信息并保存到本地数据库（现版本为JSON文件）。
+可以用不同的 AI Agent 基于比赛信息或输入与保存的过往成绩为射手生成**比赛规划**与**成绩分析**。
 
 ## 功能简介
 
@@ -123,3 +124,114 @@ python scraper.py
 ## 依赖
 
 主要依赖：`openai-agents`（Agents SDK）、`openai`、`python-dotenv`、`cloudscraper`、`beautifulsoup4`（完整列表见 `requirements.txt`）。
+
+## 使用与输出范例
+
+### 模式1：（比赛规划）
+```
+请选择运行模式（1: 使用 LLM 生成比赛规划，2: 仅输出爬取的比赛，3: 成绩分析，默认 1）：1
+正在抓取俱乐部比赛信息，请稍候……
+正在调用大模型，请稍候……
+[调试] 本次调用工具 1 次：get_past_scores
+请选择输出方式（1: 打印到屏幕，2: 保存为文件，3: 同时打印+保存，默认 1）：3
+已保存到：Past_Reports\report_20260720_015224.md
+## 时间顺序与状态
+- 2026-07-26｜Briar Rabbit July USPSA｜L1｜open  
+  https://practiscore.com/briar-rabbit-july-uspsa-2026/register
+- 2026-08-02｜Cardinal Practical Shooters – August｜L1｜open  
+  https://practiscore.com/cardinal-practical-shooters-august-2026/register
+- 2026-08-09｜PCSI USPSA AUGUST｜L1｜opens in 6 days  
+  https://practiscore.com/pcsi-uspsa-august-9-2026/register
+- 2026-08-15｜Intro to USPSA – Your First Match Guided – AUG｜L1｜open
+  https://practiscore.com/intro-to-uspsa-your-first-match-guided-aug/register
+- 2026-08-19｜Vortex Optics Race Gun Nationals｜L3｜closed
+  https://practiscore.com/vortex-optics-race-gun-nationals-presented-by-kimber/register
+- 2026-08-22｜ACTC USPSA｜L1｜opens in 1 week
+  https://practiscore.com/actc-uspsa-clone-clone/register
+- 2026-08-23｜Briar Rabbit August USPSA｜L1｜opens in 6 days
+  https://practiscore.com/briar-rabbit-august-uspsa-2026/register
+- 2026-09-12｜Private Match｜L1｜Private: opens in 2 weeks（无链接）
+- 2026-09-13｜Private Match｜L1｜Private: opens in 2 weeks（无链接）
+- 2026-09-13｜ACTC USPSA｜L1｜opens in 4 weeks
+  https://practiscore.com/actc-uspsa-clone-3/register
+- 2027-05-20｜Ohio State Buckeye Blast｜L2｜opens in 5 months
+  https://practiscore.com/2027-ohio-state-buckeye-blast/register
+
+## 参赛建议（以晋级B为目标）
+- 近期立刻报：7/26、8/2、8/15（均open）。
+- 待开报设提醒：8/09、8/22、8/23（各自开放当日即报，名额快）。
+- 9/13撞期：在ACTC与PCSI二选一；优先选你常去且分组稳定的场地。
+- Private Match：两周后留意俱乐部通知，无链接需联系人/群内消息。
+- 月度节奏：每月2–3场本地L1，结合你近期CO组出枪节奏，连续两月保持参赛密度。
+- 中期目标：锁定2027 Buckeye Blast（L2）作为段位认证赛事，提前准备住宿/分组。
+
+备注：Nationals均closed，可忽略本周期报到计划。
+```
+### 模式2仅输出文件与比赛列表
+
+### 模式3：（成绩分析）
+
+```
+请选择运行模式（1: 使用 LLM 生成比赛规划，2: 仅输出爬取的比赛，3: 成绩分析，默认 1）：3
+列顺序如下：
+%  Pts  Time  % psbl  Div  Class  PF  A  C  D  M  NPM  NS  Proc  Apen
+Div 可用简写：CO / LO / Limited / Open / PCC 等
+示例：42.66% 193.5518 260.40 41.79 CO U MINOR 79 15 2 5 - - - -
+请逐行粘贴成绩数据，全部粘贴完成后，在新的一行输入 END 回车结束：
+40.03 295.3553 218.01 43.21 CO C MINOR 114 29 4 11 - 1 - -
+END
+本次 1 条成绩已写入数据库：Past_Scores\scores_db.json
+是否调用大模型分析成绩？（1: 是，进行分析，2: 否，仅导出 JSON，默认 1）：1
+正在调用大模型，请稍候……
+[调试] 本次未调用任何工具
+请选择输出方式（1: 打印到屏幕，2: 保存为文件，3: 同时打印+保存，默认 1）：3
+已保存到：Past_Reports\score_report_20260720_020155.md
+## 1) 总体表现
+- 综合百分比：40.03%（C 水平中段）
+- 命中分布：A 114、C 29、D 4、M 11、NS 1（未记录程序罚分）
+- 粗略命中质量：A 77.6%，C 19.7%，D 2.7%；失误率≈7%（M/(A+C+D+M)）
+- 主要结论：分数下滑的主因是高额罚分（11×M + 1×NS），其次是C/D 偏多；速度相对信息不足，但从“percent_possible 43.21”看，命中效率仍有较大提升空间。
+
+## 2) 主要失分点
+- 脱靶 M 过多：对总分杀伤最大（每个 -10，还额外浪费补枪时间）
+- 误击禁靶 NS：高风险决策与视觉确认不足
+- C/D 偏多：尤其在移动或困难角度上，视觉停留与扳机控制不足
+- 速度与命中失衡：为追速度牺牲命中（从M与NS推断）
+
+## 3) 升级到 B 级的关键指标
+- 将 M 控制到 ≤1–2/整场；NS 归零
+- A 命中率≥85%（C ≤12%，D ≤1–2%）
+- 保持稳定节奏：困难目标“减速到能打A”，容易目标“提速不丢A/C”
+
+## 4) 训练建议与阶段计划（4–6 周）
+通用标准与量化
+- 练习中每100发 M ≤1；A≥90%；计时器分组记录
+- 目标尺寸/距离：7–15米为主，穿插20–25米精度段
+
+周计划
+- 第1–2周（止血：稳定A、消灭M/NS）
+  - 干火（每日15–20分钟）：出枪至A区、转移视线-枪口一致，快瞄停稳再击发；门框/小圆贴作“A”
+  - 实弹（每周1）：精准控扳机与视觉耐心
+    - Doubles（7–10米）：跟枪而非抢扳机，分组看弹着团
+    - 10-10-10（10米10发10秒，目标A/C线内≥9A）
+    - 远距离精度（20–25米）：单发与双发，只要出C/D立即降速
+- 第3–4周（效率：在控制下提速）
+  - Bill Drill（7–10米）：6发，目标≥5A，分组逐步降时
+  - 2x2x2、Blake Drill（3靶转移）：先“看A再走”，转移提前目光
+  - 进入/退出靶位空枪+少量实弹：进入后第一枪A、退出前最后一枪A
+- 第5–6周（场景化与容错）
+  - 小型组合科目：含遮挡、摆角、位置变换
+  - 罚分压力练：设“丢A或出M加俯卧撑/重来”规则
+  - 弱/强手单手击发（7–10米）：稳A为先
+
+配套
+- 记录每次训练的A/C/D/M数据与时间，周周复盘
+- 调整光学瞄准器亮度与零位；确认握把一致性和扳机路径
+
+## 5) 赛前备战重点（下场比赛）
+- 策略：硬靶/远靶/小窗位“降速保A”，仅在近大靶大胆提速
+- 视觉：瞄具清晰+确认A区边缘稳定再击发，拒绝“半停枪”出枪
+- 计划：确保无程序性风险路线；不赌角度、不赌弹
+- 执行：发现第一发漂移，立刻补枪，不拖延；守纪律把NS风险降为0
+- 心态：以“零M零NS”为KPI，名次其次，先把命中质量拉满
+```

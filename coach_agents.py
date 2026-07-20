@@ -2,7 +2,7 @@
 
 from agents import Agent, Runner, function_tool
 
-from config import MODEL, PAST_REPORTS_DIR, PAST_SCORES_DIR
+from config import MAX_PAST_REPORTS, MODEL, PAST_REPORTS_DIR, PAST_SCORES_DIR
 from storage import read_dir_files
 
 #读取历史成绩数据
@@ -10,30 +10,33 @@ from storage import read_dir_files
 def get_past_scores() -> str:
     return read_dir_files(PAST_SCORES_DIR, ".json")
 
-#读取历史分析报告
+#读取最近的历史分析报告（限制数量，避免上下文过长）
 @function_tool
 def get_past_reports() -> str:
-    return read_dir_files(PAST_REPORTS_DIR, ".md")
+    return read_dir_files(PAST_REPORTS_DIR, ".md", limit=MAX_PAST_REPORTS)
 
 
 # Agent 1：比赛规划
 planning_agent = Agent(
     name="Match Planning Coach",
     model=MODEL,
+    tools=[get_past_scores],
     instructions="""
 你是一名射击赛事规划顾问。
 我现在是一位C级的USPSA射手，想要升级到B级。
 你会收到从俱乐部网站抓取到的「即将进行的比赛」信息。
 请专注于「参赛日程规划」。训练计划与能力提升的详细分析由成绩分析环节负责，你不必展开。
+你可以使用以下工具：
+- get_past_scores：读取历史成绩，用于参考过往比赛安排、保持建议连贯
 
 要求：
 1. 按时间顺序梳理即将进行的比赛，标注日期、项目与级别
-2. 给出参赛建议
-3. 提示报名状态（如尚未开放报名）等需要注意的事项，并给出报名链接
+2. 给出参赛建议，必要时参考过往比赛安排
+3. 提示报名状态（如尚未开放报名）等需要注意的事项，给出报名链接
 4. 不要编造比赛信息中没有的内容
 
 必须以 markdown 格式输出。
-请尽量简短：多用要点/列表，避免冗长铺垫，全文控制在约 400 字以内。
+请尽量简短：多用要点/列表，避免冗长铺垫，全文（不包括比赛链接）控制在约 400 字以内。
 """,
 )
 
@@ -47,7 +50,7 @@ score_agent = Agent(
 我现在是一位C级的USPSA射手，想要升级到B级。
 你会收到我的比赛成绩数据（JSON 格式，每个对象是一条成绩，字段名已说明含义）。
 注意这些成绩是比赛的combined成绩，而不是stage的成绩。
-你可以使用以下工具：
+必要时使用以下工具：
 - get_past_scores：读取历史成绩，用于对比本次与过往表现、判断趋势
 - get_past_reports：读取历史分析报告，用于参考过往结论、保持建议连贯
 

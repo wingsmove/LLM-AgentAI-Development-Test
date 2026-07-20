@@ -41,13 +41,19 @@ def append_scores_to_db(records: list[dict]) -> str:
 
     return SCORES_DB_PATH
 
-#读取目录下所有文件
-def read_dir_files(directory: str, extension: str) -> str:
+#读取目录下的文件（limit 不为空时只取按修改时间最新的 limit 个，避免上下文过长）
+def read_dir_files(directory: str, extension: str, limit: int | None = None) -> str:
     if not os.path.isdir(directory):
         return f"（{directory} 目录不存在或暂无文件）"
-    filenames = sorted(f for f in os.listdir(directory) if f.endswith(extension))
+    filenames = [f for f in os.listdir(directory) if f.endswith(extension)]
     if not filenames:
         return f"（{directory} 目录暂无 {extension} 文件）"
+
+    # 按修改时间从新到旧排序，必要时只取最近的 limit 个
+    filenames.sort(key=lambda n: os.path.getmtime(os.path.join(directory, n)), reverse=True)
+    if limit is not None:
+        filenames = filenames[:limit]
+
     parts = []
     for name in filenames:
         with open(os.path.join(directory, name), "r", encoding="utf-8") as f:

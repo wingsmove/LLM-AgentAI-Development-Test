@@ -16,6 +16,9 @@ CLUBS_PATH = "Informations/clubs.json"
 # 使用的大模型
 MODEL = "gpt-5"
 
+# 成绩分析 Agent 读取历史报告的最大数量（避免上下文过长）
+MAX_PAST_REPORTS = 3
+
 # 成绩数据的字段（与用户粘贴的列顺序一致）
 SCORE_FIELDS = [
     "percent",                    # %：本场完成度百分比
