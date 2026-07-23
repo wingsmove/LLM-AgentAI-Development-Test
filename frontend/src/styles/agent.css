@@ -1,0 +1,40 @@
+.agent-card h2 {
+  margin-bottom: 12px;
+}
+
+.agent-card p {
+  margin-bottom: 12px;
+}
+
+.analyze-button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #4f8cff;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.analyze-button:hover {
+  background: #3a78f0;
+}
+
+.analyze-button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.report {
+  margin-top: 16px;
+  padding: 16px;
+  background: #14151a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--mono, monospace);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+}
