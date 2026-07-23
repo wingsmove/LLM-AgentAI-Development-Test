@@ -1,0 +1,28 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #333;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  color: #9ab;
+}
+
+.delete-button {
+  border: none;
+  padding: 4px 8px;
+  background: #ff0000;
+  border-radius: 4px;
+}
+
+.delete-button:hover {
+  background: #ff6565;
+  cursor: pointer;
+}

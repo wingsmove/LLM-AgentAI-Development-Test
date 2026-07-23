@@ -1,0 +1,56 @@
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.container > h1 {
+  text-align: center;
+}
+
+.card {
+  width: 100%;
+  box-sizing: border-box;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 8px 20px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: inherit;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.tab:hover {
+  border-color: #4f8cff;
+}
+
+.tab.active {
+  background: #4f8cff;
+  border-color: #4f8cff;
+  color: white;
+  font-weight: 600;
+}
+
+.error-message {
+  margin-bottom: 12px;
+  color: #ff8d8d;
+}
